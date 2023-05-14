@@ -21,9 +21,6 @@ response = requests.get(url, files=files)
 print(response.json())
 ```
 
-    {'recommend': 'thin', 'predict_arr': '65.2%'}
-    
-
 #### POSTMAN 활용
 
 
@@ -40,11 +37,7 @@ plt.imshow(img)
 plt.show()
 ```
 
-
-    
-![png](README_files/README_6_0.png)
-    
-
+![image.png](attachment:image.png)
 
 ### http://syg0203.iptime.org:2030/
 
@@ -62,8 +55,4 @@ ax2.imshow(img)
 plt.show()
 ```
 
-
-    
-![png](README_files/README_8_0.png)
-    
-
+![image.png](attachment:image.png)
