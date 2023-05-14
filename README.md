@@ -37,6 +37,12 @@ plt.imshow(img)
 plt.show()
 ```
 
+
+    
+![png](README_files/README_6_0.png)
+    
+
+
 ![image.png](attachment:image.png)
 
 ### http://syg0203.iptime.org:2030/
@@ -55,4 +61,10 @@ ax2.imshow(img)
 plt.show()
 ```
 
-![image.png](attachment:image.png)
+
+    
+![png](README_files/README_9_0.png)
+    
+
+
+![image.png](attachment:image.png)![image.png](attachment:image.png)
