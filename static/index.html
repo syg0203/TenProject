@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Doraemong_Fist</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light nav-distance">
+        <a class="navbar-brand" href="https://www.instagram.com/nayeonyny/">도라에몽 주먹 테스트</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://ewcdata.com/">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li> -->
+            </ul>
+        </div>
+    </nav>
+    <section class="section">
+        <h1 class="title">AI 도라에몽 주먹 테스트</h1>
+        <h4 class="subtitle">나는 대나무 헬리콥터가 있을까?</h2>
+    </section>
+    <!-- <button type="button" onclick="init()">테스트 하러 가기</button> -->
+    <!-- <button type="button" onclick="predict()">예측</button> -->
+    <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <div class="container file-upload">
+        <div class="image-upload-wrap">
+            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+            <div class="drag-text">
+                <img src="img/upload.svg" class="mt-5 pt-5 upload">
+                <h3 class="mb-5 pb-5 pt-4  upload-text">주먹 사진을 올려놓거나 눌러서 업로드하세요!</h3>
+            </div>
+        </div>
+        <div class="file-upload-content">
+            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
+            <div id="loading" class="animated bounce">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p class="text-center">AI가 당신의 주먹을 분석중입니다.</p>
+            </div>
+            <p class="result-message"></p>
+            <div id="label-container"></div>
+
+            <div class="image-title-wrap">
+                <button type="button" onclick="window.location.reload()" class="again">다른 사진으로 재시도</button>
+            </div>
+
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+
+    <!-- Optional JavaScript -->
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                if (!input.files[0].type.startsWith('image/')) {
+                    alert("사진을 넣어주세요");
+                    return;
+                }
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('.image-title-wrap').hide()
+                    $('.image-upload-wrap').hide();
+                    $('#loading').show();
+                    $('.file-upload-image').attr('src', e.target.result);
+                    $('.file-upload-content').show();
+                    $('.image-title').html(input.files[0].name);
+                    init().then(function(){
+                        $('#loading').hide();
+                        $('.image-title-wrap').show()
+                    });
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                removeUpload();
+            }
+        }
+
+        function removeUpload() {
+            $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+            $('.file-upload-content').hide();
+            $('.image-upload-wrap').show();
+        }
+        $('.image-upload-wrap').bind('dragover', function() {
+            $('.image-upload-wrap').addClass('image-dropping');
+        });
+        $('.image-upload-wrap').bind('dragleave', function() {
+            $('.image-upload-wrap').removeClass('image-dropping');
+        });
+    </script>
+
+    <script type="text/javascript">
+        async function init() {
+            var image = document.getElementById("face-image");
+
+            // create a Blob object from base64 encoded string
+            var byteCharacters = atob(image.src.split(',')[1]);
+            var byteNumbers = new Array(byteCharacters.length);
+            for (var i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            var byteArray = new Uint8Array(byteNumbers);
+            var blob = new Blob([byteArray], { type: 'image/jpeg' });
+
+            const formData = new FormData();
+            formData.append("file", blob, "image.jpg");
+
+            const response = await fetch('/photo', {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.json();
+            console.log(result['recommend']);
+            console.log(result['predict_arr']);
+            var resultmessage;
+            switch (result['recommend']){
+                case "fat":
+                    resultmessage='대나무 헬리콥터를 가지고 계신가요?'
+                    break;
+                case "thin":
+                    resultmessage='진구야?'
+                    break;
+            }
+            $('.result-message').html(resultmessage)
+            labelContainer = document.getElementById("label-container");
+            var barWidth=result['predict_arr']*0.8+"%";
+
+            // 텍스트가 아닌 html 태그를 넣어주고 태그에 막대그래프처럼 크기를 넣어주자
+            const newLabel = document.createElement("div");
+            var label = "<div class='doraemon-label d-flex align-items-center'>도라에몽일 확률?</div>"
+            var bar = "<div class='bar-container position-relative container'><div class='doraemon-box'></div><div class='d-flex justify-content-center align-items-center doraemon-bar' style='width: " + barWidth + "'><span class='d-block percent-text'>" + result['predict_arr'] + "%</span></div></div>"
+            newLabel.innerHTML = label+bar;
+            labelContainer.appendChild(newLabel);
+        }
+    </script>
+
+</body>
+<!-- Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ -->
+
+</html>

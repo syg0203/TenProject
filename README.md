@@ -1,6 +1,6 @@
-### 도라에몽 주먹 판별 모델을 실행하는 API 호출
+### 도라에몽 주먹 테스트
 
-#### python 활용
+#### python api
 
 img_path = 로컬에 저장된 이미지 경로 입력
 
@@ -26,4 +26,44 @@ print(response.json())
 
 #### POSTMAN 활용
 
-![image.png](attachment:image.png)
+
+```python
+import cv2
+import matplotlib.pyplot as plt
+```
+
+
+```python
+img = cv2.imread('./readme_1.png')
+plt.axis('off') # 창에있는 x축 y축 제거
+plt.imshow(img)
+plt.show()
+```
+
+
+    
+![png](README_files/README_6_0.png)
+    
+
+
+### http://syg0203.iptime.org:2030/
+
+
+```python
+img = cv2.imread('./readme_2.jpg')
+fig = plt.figure()
+ax1 = fig.add_subplot(1,2,1)
+ax1.axis('off')
+ax1.imshow(img)
+img = cv2.imread('./readme_3.jpg')
+ax2 = fig.add_subplot(1,2,2)
+ax2.axis('off')
+ax2.imshow(img)
+plt.show()
+```
+
+
+    
+![png](README_files/README_8_0.png)
+    
+
