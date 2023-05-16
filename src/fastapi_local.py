@@ -7,6 +7,10 @@ from tensorflow.keras.models import load_model
 import asyncio
 import nest_asyncio
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import StreamingResponse
+import io
+from PIL import Image
+from pyppeteer import launch
 
 import uuid
 import os
@@ -53,15 +57,13 @@ async def upload_photo(file: UploadFile):
     with open(os.path.join(UPLOAD_DIR, filename), "wb") as fp:
         fp.write(content)
     json_string=asyncio.run(predict(filename))
+    print(os.path.join(UPLOAD_DIR, filename))
+    os.remove(os.path.join(UPLOAD_DIR, filename))
     if json_string[0]=='fat':
         result={"recommend":json_string[0],'predict_arr':str(round(json_string[1]*100,1))}
     else:
         result={"recommend":json_string[0],'predict_arr':str(round((1-json_string[1])*100,1))}
     return result
-
-@app.get('/photodown')
-def get_image():
-    return FileResponse("test.jpg")
 
 app.mount("/", StaticFiles(directory="static",html = True), name="static")
 
