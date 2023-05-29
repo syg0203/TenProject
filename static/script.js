@@ -26,19 +26,51 @@ function clip(){
 
     alert("URL이 복사되었습니다.")  // 알림창
     }
+
+let result;
+
+function base64ToByteArray(base64) {
+    try {
+      const binaryString = atob(base64);
+      const byteArray = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        byteArray[i] = binaryString.charCodeAt(i);
+      }
+      return byteArray;
+    } catch (error) {
+      console.error('Failed to decode base64:', error);
+      return null;
+    }
+  }
+
 function readURL(input) {
     if (input.files && input.files[0]) {
         if (!input.files[0].type.startsWith('image/')) {
-            alert("사진을 넣어주세요");
+            alert("");
             return;
         }
         var reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = async function(e) {
             $('.image-title-wrap').hide()
             $('.image-upload-wrap').hide();
             $('#face-image').hide();
             $('#loading').show();
-            $('.file-upload-image').attr('src', e.target.result).css('max-height', '300px');
+            var base65String = e.target.result.split(',')[1]
+            
+            var byteCharacters = base64ToByteArray(base65String);
+            var byteArray = new Uint8Array(byteCharacters);
+            var blob = new Blob([byteArray], { type: 'image/jpeg' });
+            const formData = new FormData();
+            formData.append("file", blob, "image.jpg");
+            
+            const response = await fetch('/photo', {
+                method: 'POST',
+                body: formData,
+            });
+
+            result = await response.json();
+            const dataUrl = `data:image/jpeg;base64,${result['filename']}`;
+            $('.file-upload-image').attr('src', dataUrl).css('max-height', '300px');
             $('.file-upload-content').show();
             $('.image-title').html(input.files[0].name);
             init().then(function(){
@@ -53,6 +85,8 @@ function readURL(input) {
         removeUpload();
     }
 }
+    
+
 
 function removeUpload() {
     $('.file-upload-input').replaceWith($('.file-upload-input').clone());
@@ -67,27 +101,6 @@ $('.image-upload-wrap').bind('dragleave', function() {
 });
 
 async function init() {
-    var image = document.getElementById("face-image");
-
-    // create a Blob object from base64 encoded string
-    var byteCharacters = atob(image.src.split(',')[1]);
-    var byteNumbers = new Array(byteCharacters.length);
-    for (var i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    var byteArray = new Uint8Array(byteNumbers);
-    var blob = new Blob([byteArray], { type: 'image/jpeg' });
-
-    const formData = new FormData();
-    formData.append("file", blob, "image.jpg");
-
-    const response = await fetch('/photo', {
-        method: 'POST',
-        body: formData,
-    });
-    const result = await response.json();
-    console.log(result['recommend']);
-    console.log(result['predict_arr']);
     var resultmessage;
     switch (result['recommend']){
         case "fat":
