@@ -2,21 +2,18 @@ import uvicorn
 from fastapi import FastAPI, UploadFile
 import numpy as np
 import asyncio
-import nest_asyncio
 from fastapi.staticfiles import StaticFiles
 import cv2
 import base64
 import uuid
 import os
-nest_asyncio.apply()
 import torch
-import os
 from PIL import Image
 from torchvision.ops import box_iou
 
 label_li=np.array(['fat','thin'])
 
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='./asset/epoch73.pt')
+model = torch.hub.load('ultralytics/yolov5', 'custom', path='./asset/epoch54.pt')
 output_folder = './temp_output'
 
 async def remove_overlapping_boxes(boxes, scores, labels, threshold):
@@ -79,9 +76,7 @@ async def imagedown_async(img_path):
         return 0
 
 async def predict_batch(img_paths):
-    loop = asyncio.get_event_loop()
-    results=loop.run_until_complete(asyncio.gather(*(imagedown_async(i) for i in img_paths)))
-    # results=asyncio.run((imagedown_async(i) for i in img_paths))
+    results = await asyncio.gather(*(imagedown_async(i) for i in img_paths))
     predict_arr=np.max(results)
 
     recommend=label_li[np.argmax(results)]
