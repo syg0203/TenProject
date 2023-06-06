@@ -51,10 +51,11 @@ function readURL(input) {
         }
         var reader = new FileReader();
         reader.onload = async function(e) {
-            $('.image-title-wrap').hide()
+            $('.file-upload-content').show();
+            $('#loading').show();
+            $('.image-title-wrap').hide();
             $('.image-upload-wrap').hide();
             $('#face-image').hide();
-            $('#loading').show();
             var base65String = e.target.result.split(',')[1]
             
             var byteCharacters = base64ToByteArray(base65String);
@@ -62,7 +63,7 @@ function readURL(input) {
             var blob = new Blob([byteArray], { type: 'image/jpeg' });
             const formData = new FormData();
             formData.append("file", blob, "image.jpg");
-            
+
             const response = await fetch('/photo', {
                 method: 'POST',
                 body: formData,
@@ -71,7 +72,6 @@ function readURL(input) {
             result = await response.json();
             const dataUrl = `data:image/jpeg;base64,${result['filename']}`;
             $('.file-upload-image').attr('src', dataUrl).css('max-height', '300px');
-            $('.file-upload-content').show();
             $('.image-title').html(input.files[0].name);
             init().then(function(){
                 $('#loading').hide();
@@ -102,13 +102,17 @@ $('.image-upload-wrap').bind('dragleave', function() {
 
 async function init() {
     var resultmessage;
-    switch (result['recommend']){
-        case "fat":
-            resultmessage='대나무 헬리콥터를 가지고 계신가요?'
-            break;
-        case "thin":
-            resultmessage='진구야?'
-            break;
+    console.log(result['predict_arr'])
+    if (result['predict_arr'] >= 90){
+        resultmessage='도라에몽?'
+    } else if (result['predict_arr'] < 90 && result['predict_arr'] >= 80){
+        resultmessage='대나무 헬리콥터를 가지고 계신가요?'
+    } else if (result['predict_arr'] < 80 && result['predict_arr'] >= 50){
+        resultmessage='도라에몽 위험'
+    } else if (result['predict_arr'] < 50 && result['predict_arr'] >= 1){
+        resultmessage='진구?'
+    } else if (result['predict_arr'] == 0){
+        resultmessage='주먹이 탐지되지 않았습니다.'
     }
     $('.result-message').html(resultmessage)
     labelContainer = document.getElementById("label-container");
