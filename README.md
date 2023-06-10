@@ -4,6 +4,9 @@
 
 #### 임시주소 : http://syg0203.iptime.org:2030/
 
+#### ●index page
+![image](https://github.com/syg0203/TenProject/assets/79491796/83ded2a7-5cd2-4692-b6c7-c240c4a6ea65)
+
 #### ●사진 업로드
 ![1](https://github.com/syg0203/Doraemon_fist/assets/79491796/2628f150-4e54-4a66-9f29-a01c3a317b11)
 
