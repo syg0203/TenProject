@@ -1,3 +1,3 @@
-from api.doraemong import app as doraemong
+from api.doraemong import route as doraemong
 
 __all__ = ["doraemong"]
