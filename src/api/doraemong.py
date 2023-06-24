@@ -15,7 +15,7 @@ class doraemong:
         self.label_li = np.array(['fat', 'thin'])
 
         self.model = torch.hub.load(
-            'ultralytics/yolov5', 'custom', path='./asset/epoch77-l.pt')
+            './yolov5', 'custom', path='./asset/epoch77-l.pt', source='local')
         self.model.names[0] = '최고 도라에몽'
         self.output_folder = './temp_output'
 
@@ -127,7 +127,7 @@ async def upload_photo(file: UploadFile):
     json_string = await doraecls.predict(filename)
 
     os.remove(os.path.join(UPLOAD_DIR, filename))
-    img = cv2.imread('E:/WD/Doraemon_fist/temp_output/'+filename)
+    img = cv2.imread('./temp_output/'+filename)
     jpg_img = cv2.imencode('.jpg', img)
     b64_string = base64.b64encode(jpg_img[1]).decode('utf-8')
     os.remove(os.path.join(PREDICT_DIR, filename))
