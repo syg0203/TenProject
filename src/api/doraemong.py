@@ -1,22 +1,22 @@
 from fastapi import APIRouter, UploadFile
 import numpy as np
 import asyncio
-import cv2
 import base64
-import uuid
+import cv2
+import io
 import os
 import torch
 from PIL import Image
 from torchvision.ops import box_iou
 
+model = torch.hub.load(
+    './yolov5', 'custom', path='./asset/epoch77-l.pt', source='local')
+
 
 class doraemong:
     def __init__(self):
         self.label_li = np.array(['fat', 'thin'])
-
-        self.model = torch.hub.load(
-            './yolov5', 'custom', path='./asset/epoch77-l.pt', source='local')
-        self.model.names[0] = '최고 도라에몽'
+        model.names[0] = '최고 도라에몽'
         self.output_folder = './temp_output'
 
     async def remove_overlapping_boxes(self, boxes, scores, labels, threshold):
@@ -62,36 +62,39 @@ class doraemong:
         return mask
 
     async def imagedown_async(self, img_path):
-        image = Image.open(img_path)
-        results = self.model(image)
+        image = Image.open(io.BytesIO(img_path))
+        self.results = model(image)
 
         # mask true인덱스만 추출 -> 중첩 박스 제거
-        mask = await self.process_predictions(results, threshold=0.8)
-        results.xyxy[0] = results.xyxy[0][torch.nonzero(mask).squeeze(1)]
+        mask = await self.process_predictions(self.results, threshold=0.8)
+        self.results.xyxy[0] = self.results.xyxy[0][torch.nonzero(
+            mask).squeeze(1)]
 
         # 라벨이 노말인 경우 도라에몽으로 변환
-        mask_tmp = results.xyxy[0][:, 5] == 1
-        results.xyxy[0][mask_tmp, 4] = (1-results.xyxy[0][mask_tmp, 4])/2
+        mask_tmp = self.results.xyxy[0][:, 5] == 1
+        self.results.xyxy[0][mask_tmp, 4] = (
+            1-self.results.xyxy[0][mask_tmp, 4])/2
 
         # 라벨이 노말인 경우 도라에몽으로 변환
-        mask_tmp = results.xyxy[0][:, 5] == 0
-        results.xyxy[0][mask_tmp, 4] = (results.xyxy[0][mask_tmp, 4]+1)/2
+        mask_tmp = self.results.xyxy[0][:, 5] == 0
+        self.results.xyxy[0][mask_tmp, 4] = (
+            self.results.xyxy[0][mask_tmp, 4]+1)/2
 
         # 라벨 전체 도라에몽으로
-        results.xyxy[0][:, 5] = results.xyxy[0][:, 5]*0
+        self.results.xyxy[0][:, 5] = self.results.xyxy[0][:, 5]*0
 
         # 최고 도라에몽만 추출
         try:
-            results.xyxy[0] = results.xyxy[0][results.xyxy[0]
-                                              [:, 4] == results.xyxy[0][:, 4].max()]
+            self.results.xyxy[0] = self.results.xyxy[0][self.results.xyxy[0]
+                                                        [:, 4] == self.results.xyxy[0][:, 4].max()]
         except RuntimeError:
             pass
 
         # 결과 이미지 저장
-        results.save(save_dir=self.output_folder, exist_ok=True)
+        # self.results.save(save_dir=self.output_folder, exist_ok=True)
 
         data = None  # data 변수 초기화
-        for detection in results.pandas().xyxy[0].iterrows():
+        for detection in self.results.pandas().xyxy[0].iterrows():
             _, data = detection
         try:
             return data['confidence']
@@ -106,7 +109,7 @@ class doraemong:
         return recommend, predict_arr
 
     async def predict(self, image):
-        get_pb = await self.predict_batch(['./temp/'+image])
+        get_pb = await self.predict_batch([image])
         recommend = get_pb[0]
         predict_arr = get_pb[1]
         return recommend, predict_arr
@@ -117,24 +120,40 @@ route = APIRouter()
 
 @route.post("/photo")
 async def upload_photo(file: UploadFile):
+    # Doraemong 클래스의 인스턴스 생성
     doraecls = doraemong()
-    UPLOAD_DIR = "./temp"
-    PREDICT_DIR = "./temp_output"
-    content = await file.read()
-    filename = f"{str(uuid.uuid4())}.jpg"
-    with open(os.path.join(UPLOAD_DIR, filename), "wb") as fp:
-        fp.write(content)
-    json_string = await doraecls.predict(filename)
 
-    os.remove(os.path.join(UPLOAD_DIR, filename))
-    img = cv2.imread('./temp_output/'+filename)
-    jpg_img = cv2.imencode('.jpg', img)
-    b64_string = base64.b64encode(jpg_img[1]).decode('utf-8')
-    os.remove(os.path.join(PREDICT_DIR, filename))
+    # 업로드된 파일의 내용 읽기
+    content = await file.read()
+
+    # DoraemonG 모델을 사용하여 예측 수행
+    json_string = await doraecls.predict(content)
+
+    # 결과를 이미지 바이트로 변환
+    image_bytes = np.array(doraecls.results.render()[0])
+
+    # 이미지 바이트를 RGB 형식으로 변환
+    image_rgb = cv2.cvtColor(image_bytes, cv2.COLOR_BGR2RGB)
+
+    # RGB 이미지를 JPEG 형식으로 인코딩
+    _, encoded_image = cv2.imencode('.jpg', image_rgb)
+
+    # JPEG 이미지를 base64 문자열로 인코딩
+    b64_string = base64.b64encode(encoded_image).decode('utf-8')
+
+    # 예측된 클래스에 따라 결과 딕셔너리 생성
     if json_string[0] == 'fat':
-        result = {"recommend": json_string[0], 'predict_arr': str(
-            round(json_string[1]*100, 1)), 'filename': b64_string}
+        result = {
+            "recommend": json_string[0],
+            'predict_arr': str(round(json_string[1] * 100, 1)),
+            'filename': b64_string
+        }
     else:
-        result = {"recommend": json_string[0], 'predict_arr': str(
-            round((1-json_string[1])*100, 1)), 'filename': b64_string}
+        result = {
+            "recommend": json_string[0],
+            'predict_arr': str(round((1 - json_string[1]) * 100, 1)),
+            'filename': b64_string
+        }
+
+    # 결과 딕셔너리 반환
     return result
