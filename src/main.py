@@ -5,11 +5,10 @@ from api import (
 )
 import uvicorn
 from fastapi.staticfiles import StaticFiles
-
 app = FastAPI()
 
-app.include_router(doraemong,
-                   idol_position_router)
+app.include_router(doraemong)
+app.include_router(idol_position_router)
 
 
 app.mount("/", StaticFiles(directory="static", html=True), name="index")

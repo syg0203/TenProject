@@ -4,13 +4,14 @@ import asyncio
 import base64
 import cv2
 import io
-import os
 import torch
 from PIL import Image
 from torchvision.ops import box_iou
-
+import os
 model = torch.hub.load(
     './yolov5', 'custom', path='./asset/epoch77-l.pt', source='local')
+
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 
 class doraemong:
