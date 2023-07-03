@@ -22,7 +22,8 @@ class doraemong:
 
     async def remove_overlapping_boxes(self, boxes, scores, labels, threshold):
         num_boxes = len(boxes)
-
+        if num_boxes == 1:
+            return None
         # 중첩된 객체 검출을 위한 IoU 계산
         iou = box_iou(boxes, boxes)
 
@@ -65,18 +66,19 @@ class doraemong:
     async def imagedown_async(self, img_path):
         image = Image.open(io.BytesIO(img_path))
         self.results = model(image)
-
         # mask true인덱스만 추출 -> 중첩 박스 제거
         mask = await self.process_predictions(self.results, threshold=0.8)
+        if mask == None:
+            return -1
         self.results.xyxy[0] = self.results.xyxy[0][torch.nonzero(
             mask).squeeze(1)]
 
-        # 라벨이 노말인 경우 도라에몽으로 변환
+        # 라벨이 노말인 경우 도라에몽으로 변환 normalization
         mask_tmp = self.results.xyxy[0][:, 5] == 1
         self.results.xyxy[0][mask_tmp, 4] = (
             1-self.results.xyxy[0][mask_tmp, 4])/2
 
-        # 라벨이 노말인 경우 도라에몽으로 변환
+        # 라벨 도라에몽일 경우 normalization
         mask_tmp = self.results.xyxy[0][:, 5] == 0
         self.results.xyxy[0][mask_tmp, 4] = (
             self.results.xyxy[0][mask_tmp, 4]+1)/2
@@ -90,9 +92,6 @@ class doraemong:
                                                         [:, 4] == self.results.xyxy[0][:, 4].max()]
         except RuntimeError:
             pass
-
-        # 결과 이미지 저장
-        # self.results.save(save_dir=self.output_folder, exist_ok=True)
 
         data = None  # data 변수 초기화
         for detection in self.results.pandas().xyxy[0].iterrows():
@@ -126,13 +125,11 @@ async def upload_photo(file: UploadFile):
 
     # 업로드된 파일의 내용 읽기
     content = await file.read()
-
     # DoraemonG 모델을 사용하여 예측 수행
     json_string = await doraecls.predict(content)
 
     # 결과를 이미지 바이트로 변환
     image_bytes = np.array(doraecls.results.render()[0])
-
     # 이미지 바이트를 RGB 형식으로 변환
     image_rgb = cv2.cvtColor(image_bytes, cv2.COLOR_BGR2RGB)
 
@@ -142,17 +139,29 @@ async def upload_photo(file: UploadFile):
     # JPEG 이미지를 base64 문자열로 인코딩
     b64_string = base64.b64encode(encoded_image).decode('utf-8')
 
+    # 아싸이미지 base64 문자열로 인코딩
+    AssaImg = cv2.imread('./asset/assa.jpg', cv2.IMREAD_COLOR)
+    AssaImg = np.array(AssaImg)
+    _, AssaImg = cv2.imencode('.jpg', AssaImg)
+    AssaImg = base64.b64encode(AssaImg).decode('utf-8')
+
     # 예측된 클래스에 따라 결과 딕셔너리 생성
-    if json_string[0] == 'fat':
+    if json_string[1] == 0:
         result = {
             "recommend": json_string[0],
-            'predict_arr': str(round(json_string[1] * 100, 1)),
+            'predict_arr': str(0),
             'filename': b64_string
+        }
+    elif json_string[1] == -1:
+        result = {
+            "recommend": json_string[0],
+            'predict_arr': str(-1),
+            'filename': AssaImg
         }
     else:
         result = {
             "recommend": json_string[0],
-            'predict_arr': str(round((1 - json_string[1]) * 100, 1)),
+            'predict_arr': str(round((json_string[1] * 100), 1)),
             'filename': b64_string
         }
 
