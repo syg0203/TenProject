@@ -70,7 +70,6 @@ function readURL(input) {
             });
 
             result = await response.json();
-            console.log(result)
 
             const dataUrl = `data:image/jpeg;base64,${result['filename']}`;
 
@@ -106,15 +105,17 @@ $('.image-upload-wrap').bind('dragleave', function () {
 async function init() {
     var resultmessage;
     if (result['predict_arr'] >= 90) {
-        resultmessage = '도라에몽?'
+        resultmessage = '나와라 대나무 헬리콥터'
     } else if (result['predict_arr'] < 90 && result['predict_arr'] >= 80) {
         resultmessage = '대나무 헬리콥터를 가지고 계신가요?'
     } else if (result['predict_arr'] < 80 && result['predict_arr'] >= 50) {
-        resultmessage = '도라에몽 위험'
+        resultmessage = '툰툰'
     } else if (result['predict_arr'] < 50 && result['predict_arr'] >= 1) {
-        resultmessage = '진구?'
+        resultmessage = '마른애들 모임인가?'
     } else if (result['predict_arr'] == 0) {
-        resultmessage = '주먹이 탐지되지 않았습니다.'
+        resultmessage = '주먹 넣으라고 인식 못했으면 죄송'
+    } else if (result['predict_arr'] == -1) {
+        resultmessage = '아싸여서 혼자했네 친구데려오셈'
     }
     $('.result-message').html(resultmessage)
     labelContainer = document.getElementById("label-container");
