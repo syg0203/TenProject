@@ -8,8 +8,9 @@ import torch
 from PIL import Image
 from torchvision.ops import box_iou
 import os
-model = torch.hub.load(
-    './yolov5', 'custom', path='./asset/epoch77-l.pt', source='local')
+import yolov5
+
+model = yolov5.load('./asset/epoch77-l.pt')
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
@@ -18,7 +19,6 @@ class doraemong:
     def __init__(self):
         self.label_li = np.array(['fat', 'thin'])
         model.names[0] = '최고 도라에몽'
-        self.output_folder = './temp_output'
 
     async def remove_overlapping_boxes(self, boxes, scores, labels, threshold):
         num_boxes = len(boxes)
@@ -125,6 +125,7 @@ async def upload_photo(file: UploadFile):
 
     # 업로드된 파일의 내용 읽기
     content = await file.read()
+
     # DoraemonG 모델을 사용하여 예측 수행
     json_string = await doraecls.predict(content)
 
