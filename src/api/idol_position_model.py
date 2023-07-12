@@ -201,9 +201,11 @@ class response_generator:
     async def stamp_image(self, stamp, img, pos):
         pos_x, pos_y = pos
         stamp = cv2.imread(f'./static/Idol_position_test/STAMPS/{stamp}.jpg')
-        _, img_hight, _ = img.shape
+        img_length, img_hight, _ = img.shape
+        stamp_ratio = round(img_length/5)
+        stamp = cv2.resize(stamp, dsize = [stamp_ratio,stamp_ratio])
         rows, cols, _ = stamp.shape
-        h_margin, w_margin =  (pos_y-1)*100, img_hight - pos_x*(cols)
+        h_margin, w_margin =  (pos_y-1)*stamp_ratio, img_hight - pos_x*(cols)
         roi = img[h_margin : rows + h_margin, w_margin : cols + w_margin]
         img2gray = cv2.cvtColor(stamp, cv2.COLOR_BGR2GRAY)
         _, mask = cv2.threshold(img2gray, 170, 255, cv2.THRESH_BINARY)
@@ -213,6 +215,7 @@ class response_generator:
         dst = cv2.add(img_bg, stamp_fg)
         img[h_margin:rows+h_margin, w_margin:cols+w_margin] = dst
         return img
+
 
 
 
