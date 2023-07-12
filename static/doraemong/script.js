@@ -27,7 +27,6 @@ function clip() {
     alert("URL이 복사되었습니다.")  // 알림창
 }
 
-let result;
 
 function base64ToByteArray(base64) {
     try {
@@ -43,7 +42,40 @@ function base64ToByteArray(base64) {
     }
 }
 
-function readURL(input) {
+function resizeImage(image, maxWidth, maxHeight) {
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+
+    var width = image.width;
+    var height = image.height;
+
+    if (width > height) {
+        if (width > maxWidth) {
+            height *= maxWidth / width;
+            width = maxWidth;
+        }
+    } else {
+        if (height > maxHeight) {
+            width *= maxHeight / height;
+            height = maxHeight;
+        }
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+
+    ctx.drawImage(image, 0, 0, width, height);
+
+    return new Promise((resolve, reject) => {
+        canvas.toBlob(function (blob) {
+            resolve(blob);
+        }, 'image/jpeg', 0.7); // 리사이즈된 이미지를 Blob 형식으로 압축하여 0.7 품질로 저장
+    });
+}
+
+let result;
+
+async function readURL(input) {
     if (input.files && input.files[0]) {
         if (!input.files[0].type.startsWith('image/')) {
             alert("");
@@ -56,39 +88,44 @@ function readURL(input) {
             $('.image-title-wrap').hide();
             $('.image-upload-wrap').hide();
             $('#face-image').hide();
-            var base65String = e.target.result.split(',')[1]
+            var base64String = e.target.result.split(',')[1];
 
-            var byteCharacters = base64ToByteArray(base65String);
-            var byteArray = new Uint8Array(byteCharacters);
-            var blob = new Blob([byteArray], { type: 'image/jpeg' });
-            const formData = new FormData();
-            formData.append("file", blob, "image.jpg");
+            var image = new Image();
+            image.onload = async function () {
+                var blob = await resizeImage(image, 500, 500); // 이미지 크기를 500x500 픽셀로 리사이즈
 
-            const response = await fetch('/photo', {
-                method: 'POST',
-                body: formData,
-            });
+                const formData = new FormData();
+                formData.append('file', blob, 'image.jpg');
 
-            result = await response.json();
+                try {
+                    const response = await fetch('/photo', {
+                        method: 'POST',
+                        body: formData,
+                    });
 
-            const dataUrl = `data:image/jpeg;base64,${result['filename']}`;
+                    result = await response.json();
 
-            $('.file-upload-image').attr('src', dataUrl).css('max-height', '300px');
-            $('.image-title').html(input.files[0].name);
-            init().then(function () {
-                $('#loading').hide();
-                $('.image-title-wrap').show()
-                $('#face-image').show();
-                document.querySelector(".sns_wrap").style.display = "flex";
-            });
+                    const dataUrl = `data:image/jpeg;base64,${result['filename']}`;
+
+                    $('.file-upload-image').attr('src', dataUrl).css('max-height', '300px');
+                    $('.image-title').html(input.files[0].name);
+                    init().then(function () {
+                        $('#loading').hide();
+                        $('.image-title-wrap').show()
+                        $('#face-image').show();
+                        document.querySelector(".sns_wrap").style.display = "flex";
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+            image.src = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
     } else {
         removeUpload();
     }
 }
-
-
 
 function removeUpload() {
     $('.file-upload-input').replaceWith($('.file-upload-input').clone());
@@ -104,27 +141,32 @@ $('.image-upload-wrap').bind('dragleave', function () {
 
 async function init() {
     var resultmessage;
-    if (result['predict_arr'] >= 90) {
-        resultmessage = '나와라 대나무 헬리콥터'
-    } else if (result['predict_arr'] < 90 && result['predict_arr'] >= 80) {
-        resultmessage = '대나무 헬리콥터를 가지고 계신가요?'
-    } else if (result['predict_arr'] < 80 && result['predict_arr'] >= 50) {
-        resultmessage = '툰툰'
-    } else if (result['predict_arr'] < 50 && result['predict_arr'] >= 1) {
-        resultmessage = '마른애들 모임인가?'
-    } else if (result['predict_arr'] == 0) {
-        resultmessage = '주먹 넣으라고 인식 못했으면 죄송'
-    } else if (result['predict_arr'] == -1) {
-        resultmessage = '아싸여서 혼자했네 친구데려오셈'
+    if (result && result['predict_arr']) {
+        if (result['predict_arr'] >= 90) {
+            resultmessage = '나와라 대나무 헬리콥터';
+        } else if (result['predict_arr'] < 90 && result['predict_arr'] >= 80) {
+            resultmessage = '대나무 헬리콥터를 가지고 계신가요?';
+        } else if (result['predict_arr'] < 80 && result['predict_arr'] >= 50) {
+            resultmessage = '툰툰';
+        } else if (result['predict_arr'] < 50 && result['predict_arr'] >= 1) {
+            resultmessage = '마른애들 모임인가?';
+        } else if (result['predict_arr'] == 0) {
+            resultmessage = '주먹 넣으라고 인식 못했으면 죄송';
+        } else if (result['predict_arr'] == -1) {
+            resultmessage = '아싸여서 혼자했네 친구데려오셈';
+        }
+    } else {
+        resultmessage = '인식 결과가 없습니다.';
     }
-    $('.result-message').html(resultmessage)
+
+    $('.result-message').html(resultmessage);
     labelContainer = document.getElementById("label-container");
-    var barWidth = result['predict_arr'] * 0.8 + "%";
+    var barWidth = result && result['predict_arr'] ? result['predict_arr'] * 0.8 + "%" : "0%";
 
     // 텍스트가 아닌 html 태그를 넣어주고 태그에 막대그래프처럼 크기를 넣어주자
     const newLabel = document.createElement("div");
-    var label = "<div class='doraemon-label d-flex align-items-center'>도라에몽 주먹일 확률?</div>"
-    var bar = "<div class='bar-container position-relative container'><div class='doraemon-box'></div><div class='d-flex justify-content-center align-items-center doraemon-bar' style='width: " + barWidth + "'><span class='d-block percent-text'>" + result['predict_arr'] + "%</span></div></div>"
+    var label = "<div class='doraemon-label d-flex align-items-center'>도라에몽 주먹일 확률?</div>";
+    var bar = "<div class='bar-container position-relative container'><div class='doraemon-box'></div><div class='d-flex justify-content-center align-items-center doraemon-bar' style='width: " + barWidth + "'><span class='d-block percent-text'>" + (result && result['predict_arr'] ? result['predict_arr'] + "%" : "0%") + "</span></div></div>";
     newLabel.innerHTML = label + bar;
     labelContainer.appendChild(newLabel);
 }
