@@ -1,21 +1,21 @@
 from fastapi import FastAPI
 from api import (
     doraemong,
-    idol_position_router,
+    IdolPosition,
 )
 import uvicorn
 from fastapi.staticfiles import StaticFiles
 app = FastAPI()
 
 app.include_router(doraemong)
-app.include_router(idol_position_router)
+app.include_router(IdolPosition)
 
 
 app.mount("/", StaticFiles(directory="static", html=True), name="index")
 app.mount("/doraemong", StaticFiles(directory="static/doraemong",
           html=True), name="doraemong")
-app.mount("/Idol_position_test", StaticFiles(directory="static/Idol_position_test",
-          html=True), name="Idol_position_test")
+app.mount("/IdolPosition", StaticFiles(directory="static/IdolPosition",
+          html=True), name="IdolPosition")
 
 
 if __name__ == "__main__":
