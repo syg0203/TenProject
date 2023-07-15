@@ -1,26 +1,26 @@
-*{
+* {
   margin: 0;
   padding: 0;
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-a{
+a {
   text-decoration-line: none;
-  color : white;
+  color: gray;
 }
 
 
-h1{
+h1 {
   font-size: 5rem;
   font-family: 'Montserrat';
   font-weight: 900;
   color: #444;
   text-align: center;
-  margin: 1rem 0;
+  margin: 5rem 0;
 }
 
-h2{
+h2 {
   font-size: 2rem;
   font-family: 'Montserrat';
   font-weight: 700;
@@ -29,59 +29,60 @@ h2{
   margin: 1rem 0;
 }
 
-h3{
+h3 {
   font-size: 1.5rem;
   font-family: 'Montserrat';
   font-weight: 700;
   color: #444;
   text-align: center;
-  margin: 1rem 0;
+  margin: 1rem 1rem 6rem 1rem;
 }
 
-.HomepageTitle{
+.HomepageTitle {
   margin-bottom: 40px
 }
 
-.BackGroundCol{
-  background-color: rgb(255, 255, 255);
+.BackGroundCol {
+  background-color: #f9f5f6;
 }
 
-.wrapper{
+.wrapper {
   width: 90%;
   margin: 0 auto;
   max-width: 80rem;
-  float : center;
-  position : relative;
+  float: center;
+  position: relative;
 }
 
-.cols{
+.cols {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
-.col{
-  width: calc(25% - 2rem);
+.col {
+  width: calc(25% + 7rem);
   margin: 1rem;
   cursor: pointer;
 }
 
-.container{
+
+.container {
   -webkit-transform-style: preserve-3d;
-          transform-style: preserve-3d;
+  transform-style: preserve-3d;
   -webkit-perspective: 1000px;
-          perspective: 1000px;
+  perspective: 1000px;
 }
 
 .front,
-.back{
+.back {
   background-size: cover;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.25);
+  box-shadow: 0 4px 8px 0 rgba(97, 82, 82, 0.25);
   border-radius: 10px;
   background-position: center;
   -webkit-transition: -webkit-transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
@@ -90,104 +91,105 @@ h3{
   transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
   transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1), -webkit-transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
   -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
+  backface-visibility: hidden;
   text-align: center;
   min-height: 280px;
   height: auto;
   border-radius: 10px;
-  color: #fff;
+  color: #837a7a;
   font-size: 1.5rem;
 }
 
-.back{
-  background: #cedce7;
-  background: -webkit-linear-gradient(45deg,  #cedce7 0%,#596a72 100%);
-  background: -o-linear-gradient(45deg,  #cedce7 0%,#596a72 100%);
-  background: linear-gradient(45deg,  #cedce7 0%,#596a72 100%);
+.front {
+  background: #fde5ee;
 }
 
-.front:after{
+.back {
+  background: #fcd7e3;
+}
+
+.front:after {
   position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    content: '';
-    display: block;
-    opacity: .6;
-    background-color: #000;
-    -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-    border-radius: 10px;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  content: '';
+  display: block;
+  opacity: .6;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 10px;
 }
+
 .container:hover .front,
-.container:hover .back{
-    -webkit-transition: -webkit-transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
-    transition: -webkit-transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
-    -o-transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
-    transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
-    transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1), -webkit-transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
+.container:hover .back {
+  -webkit-transition: -webkit-transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transition: -webkit-transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
+  -o-transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1), -webkit-transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
 }
 
-.back{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+.back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
-.inner{
-    -webkit-transform: translateY(-50%) translateZ(60px) scale(0.94);
-            transform: translateY(-50%) translateZ(60px) scale(0.94);
-    top: 50%;
-    position: absolute;
-    left: 0;
-    width: 100%;
-    padding: 2rem;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    outline: 1px solid transparent;
-    -webkit-perspective: inherit;
-            perspective: inherit;
-    z-index: 2;
+.inner {
+  -webkit-transform: translateY(-50%) translateZ(60px) scale(0.94);
+  transform: translateY(-50%) translateZ(60px) scale(0.94);
+  top: 50%;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  padding: 2rem;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: 1px solid transparent;
+  -webkit-perspective: inherit;
+  perspective: inherit;
+  z-index: 2;
 }
 
-.container .back{
-    -webkit-transform: rotateY(180deg);
-            transform: rotateY(180deg);
-    -webkit-transform-style: preserve-3d;
-            transform-style: preserve-3d;
+.container .back {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
-.container .front{
-    -webkit-transform: rotateY(0deg);
-            transform: rotateY(0deg);
-    -webkit-transform-style: preserve-3d;
-            transform-style: preserve-3d;
-}
-
-.container:hover .back{
+.container .front {
   -webkit-transform: rotateY(0deg);
-          transform: rotateY(0deg);
+  transform: rotateY(0deg);
   -webkit-transform-style: preserve-3d;
-          transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
-.container:hover .front{
+.container:hover .back {
+  -webkit-transform: rotateY(0deg);
+  transform: rotateY(0deg);
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.container:hover .front {
   -webkit-transform: rotateY(-180deg);
-          transform: rotateY(-180deg);
+  transform: rotateY(-180deg);
   -webkit-transform-style: preserve-3d;
-          transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
-.front .inner p{
+.front .inner p {
   font-size: 2rem;
   margin-bottom: 2rem;
   position: relative;
 }
 
-.front .inner p:after{
+.front .inner p:after {
   content: '';
   width: 4rem;
   height: 2px;
@@ -200,39 +202,39 @@ h3{
   bottom: -.75rem;
 }
 
-.front .inner span{
-  color: rgba(255,255,255,0.7);
+.front .inner span {
+  color: rgba(255, 255, 255, 0.7);
   font-family: 'Montserrat';
   font-weight: 300;
 }
 
 .bottom-baner {
-  text-align : center;
-  margin-top : 20px;
-  background: #C6D4DF;
+  text-align: center;
+  margin: 3rem 1rem 0 1rem;
+  background: #f8e8ee62;
   padding: 8px 8px 8px 8px;
 }
 
 .copyright {
-  font-size: 12px;
+  font-size: 10px;
   text-align: center;
-  color: #000000;
+  color: #7a7a7a;
 }
 
-@media screen and (max-width: 64rem){
-  .col{
-    width: calc(33.333333% - 2rem);
+@media screen and (max-width: 64rem) {
+  .col {
+    width: calc(33.333333% + 7rem);
   }
 }
 
-@media screen and (max-width: 48rem){
-  .col{
-    width: calc(50% - 2rem);
+@media screen and (max-width: 48rem) {
+  .col {
+    width: calc(50% + 7rem);
   }
 }
 
-@media screen and (max-width: 32rem){
-  .col{
+@media screen and (max-width: 32rem) {
+  .col {
     width: 100%;
     margin: 0 0 2rem 0;
   }
@@ -246,10 +248,23 @@ h3{
 
 
 /* outo slide banner */
-.slide-base {box-sizing: border-box;}
-body {font-family: Verdana, sans-serif;}
-.mySlides {display: none;}
-img {vertical-align: middle;}
+.slide-base {
+  box-sizing: border-box;
+  position: inherit;
+  margin: 0rem 1rem 0rem 1rem;
+}
+
+body {
+  font-family: Verdana, sans-serif;
+}
+
+.mySlides {
+  display: none;
+}
+
+img {
+  vertical-align: middle;
+}
 
 /* Slideshow container */
 .slideshow-container {
@@ -282,7 +297,7 @@ img {vertical-align: middle;}
 .slide-dot {
   height: 15px;
   width: 15px;
-  margin: 0 2px;
+  margin: 0rem 0rem 2rem 0rem;
   background-color: #bbb;
   border-radius: 50%;
   display: inline-block;
@@ -302,16 +317,28 @@ img {vertical-align: middle;}
 }
 
 @-webkit-keyframes fade {
-  from {opacity: .4} 
-  to {opacity: 1}
+  from {
+    opacity: .4
+  }
+
+  to {
+    opacity: 1
+  }
 }
 
 @keyframes fade {
-  from {opacity: .4} 
-  to {opacity: 1}
+  from {
+    opacity: .4
+  }
+
+  to {
+    opacity: 1
+  }
 }
 
 /* On smaller screens, decrease text size */
 @media only screen and (max-width: 300px) {
-  .text {font-size: 11px}
+  .text {
+    font-size: 11px
+  }
 }

@@ -8,7 +8,6 @@ app = FastAPI()
 routers = ["doraemong", "IdolPosition"]
 
 for router in routers:
-    print(router)
     exec(f"app.include_router({router})")
     app.mount(f"/{router}", StaticFiles(directory=f"static/{router}",
               html=True), name=router)
