@@ -3,12 +3,16 @@ body {
   background-color: #ffffff;
 }
 
+.BackGroundCol {
+  background-color: #f9f5f6;
+}
+
 .file-upload {
   padding: 10% 3%;
   margin: 0 auto;
   border-radius: 10px;
-  border: solid 1.5px #f6f7fa;
-  background-color: #f6f7fa;
+  border: solid 1.5px #f9f5f6;
+  background-color: #fcdbe5af;
 }
 
 .file-upload-btn {
