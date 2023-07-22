@@ -107,7 +107,7 @@ async function readURL(input) {
 
                     const dataUrl = `data:image/jpeg;base64,${result['filename']}`;
 
-                    $('.file-upload-image').attr('src', dataUrl).css('max-height', '300px');
+                    $('.file-upload-image').attr('src', dataUrl).css('max-height', '350px');
                     $('.image-title').html(input.files[0].name);
                     init().then(function () {
                         $('#loading').hide();
@@ -143,9 +143,9 @@ async function init() {
     var resultmessage;
     if (result && result['predict_arr']) {
         if (result['predict_arr'] >= 90) {
-            resultmessage = '나와라 대나무 헬리콥터';
+            resultmessage = '나와라 풍선';
         } else if (result['predict_arr'] < 90 && result['predict_arr'] >= 80) {
-            resultmessage = '대나무 헬리콥터를 가지고 계신가요?';
+            resultmessage = '풍선을 가지고 계신가요?';
         } else if (result['predict_arr'] < 80 && result['predict_arr'] >= 50) {
             resultmessage = '툰툰';
         } else if (result['predict_arr'] < 50 && result['predict_arr'] >= 1) {
@@ -165,7 +165,7 @@ async function init() {
 
     // 텍스트가 아닌 html 태그를 넣어주고 태그에 막대그래프처럼 크기를 넣어주자
     const newLabel = document.createElement("div");
-    var label = "<div class='doraemon-label d-flex align-items-center'>도라에몽 주먹일 확률?</div>";
+    var label = "<div class='doraemon-label d-flex align-items-center'>풍선 주먹일 확률?</div>";
     var bar = "<div class='bar-container position-relative container'><div class='doraemon-box'></div><div class='d-flex justify-content-center align-items-center doraemon-bar' style='width: " + barWidth + "'><span class='d-block percent-text'>" + (result && result['predict_arr'] ? result['predict_arr'] + "%" : "0%") + "</span></div></div>";
     newLabel.innerHTML = label + bar;
     labelContainer.appendChild(newLabel);

@@ -114,7 +114,7 @@ function captureAndSave() {
     
                         const dataUrl = `data:image/jpeg;base64,${result['image']}`;
     
-                        $('.file-upload-image').attr('src', dataUrl).css('max-height', '300px');
+                        $('.file-upload-image').attr('src', dataUrl).css('max-height', '350px');
                         $('.image-title').html(input.files[0].name);
                         init().then(function () {
                             $('#loading').hide();
