@@ -11,7 +11,6 @@ routers = ["doraemong", "IdolPosition"]
 
 @app.middleware("http")
 async def access_control_middleware(request: Request, call_next):
-    print(f"Received request: {request.method} {request.url}")
     if request.url.path in ['/redoc','/docs']:
         return JSONResponse(status_code=403, content={"detail": "Access denied"})
 
