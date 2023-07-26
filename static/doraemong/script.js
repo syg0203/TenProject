@@ -153,7 +153,7 @@ async function init() {
         } else if (result['predict_arr'] == 0) {
             resultmessage = '주먹 넣으라고 인식 못했으면 죄송';
         } else if (result['predict_arr'] == -1) {
-            resultmessage = '아싸여서 혼자했네 친구데려오셈';
+            resultmessage = '혼자?아싸? 2명이상 하는거임 친구랑 같이하셈';
         }
     } else {
         resultmessage = '인식 결과가 없습니다.';
