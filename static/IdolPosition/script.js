@@ -14,9 +14,6 @@ function captureAndSave() {
     });
     }
     function clip(){
-    
-        console.log('FFFFFFF 10')
-    
         var url = '';    // <a>태그에서 호출한 함수인 clip 생성
         var textarea = document.createElement("textarea");  
         //url 변수 생성 후, textarea라는 변수에 textarea의 요소를 생성
@@ -66,9 +63,6 @@ function captureAndSave() {
     let result;
     
     function base64ToByteArray(base64) {
-    
-        console.log('fffff 1')
-    
         try {
           const binaryString = atob(base64);
           const byteArray = new Uint8Array(binaryString.length);
@@ -151,7 +145,6 @@ function captureAndSave() {
         var resultmessage;
         resultmessage = result['message'];
         $('.result-message').html(resultmessage);
-        console.log('FFFFF init')
     }
     
     
