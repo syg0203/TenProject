@@ -194,7 +194,7 @@ class response_generator:
     async def __call__(self, la_1, la_2, la_3, label_num, image):
         if la_1 == 0:
             matching_image = image
-            msg = '이게 얼굴이라고? ㅈㄹ ㄴㄴ'
+            msg = '당신은 데뷔가 불가능 합니다~!!! 현생에 충실하세요~! >.<'
         else:
             matching_image = image
             matching_image = await self.stamp_image(la_1, matching_image, pos=(2, 1))
