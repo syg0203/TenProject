@@ -1,12 +1,9 @@
 from io import BytesIO
 from PIL import Image
 import base64
-import uuid
 from fastapi import APIRouter, UploadFile
 from albumentations.pytorch.transforms import ToTensor
 import albumentations as A  # ver 0.5.2
-import json
-import os
 import numpy as np  # 1.24.3
 import torch  # ver 2.0.1+cu118
 import torch.nn as nn
