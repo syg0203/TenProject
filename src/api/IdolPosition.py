@@ -211,7 +211,7 @@ class response_generator:
 
     async def stamp_image(self, stamp, img, pos):
         pos_x, pos_y = pos
-        stamp = cv2.imread(f'./static/idolPosition/STAMPS/{stamp}.jpg')
+        stamp = cv2.imread(f'./static/idolposition/STAMPS/{stamp}.jpg')
         img_length, img_hight, _ = img.shape
         stamp_ratio = round(img_length/5)
         stamp = cv2.resize(stamp, dsize=[stamp_ratio, stamp_ratio])
