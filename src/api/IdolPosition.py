@@ -1,12 +1,9 @@
 from io import BytesIO
 from PIL import Image
 import base64
-import uuid
 from fastapi import APIRouter, UploadFile
 from albumentations.pytorch.transforms import ToTensor
 import albumentations as A  # ver 0.5.2
-import json
-import os
 import numpy as np  # 1.24.3
 import torch  # ver 2.0.1+cu118
 import torch.nn as nn
@@ -214,7 +211,7 @@ class response_generator:
 
     async def stamp_image(self, stamp, img, pos):
         pos_x, pos_y = pos
-        stamp = cv2.imread(f'./static/IdolPosition/STAMPS/{stamp}.jpg')
+        stamp = cv2.imread(f'./static/idolposition/STAMPS/{stamp}.jpg')
         img_length, img_hight, _ = img.shape
         stamp_ratio = round(img_length/5)
         stamp = cv2.resize(stamp, dsize=[stamp_ratio, stamp_ratio])
