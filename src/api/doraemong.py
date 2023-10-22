@@ -12,15 +12,14 @@ import os
 import yolov5
 import gc
 
-model = yolov5.load('./asset/epoch77-l.pt')
-
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 
 class doraemong:
     def __init__(self):
         self.label_li = np.array(['fat', 'thin'])
-        model.names[0] = '최고 도라에몽'
+        self.model = yolov5.load('./asset/epoch77-l.pt')
+        self.model.names[0] = '최고 도라에몽'
 
     async def remove_overlapping_boxes(self, boxes, scores, labels, threshold):
         num_boxes = len(boxes)
@@ -67,7 +66,7 @@ class doraemong:
 
     async def imagedown_async(self, img_path):
         image = Image.open(io.BytesIO(img_path))
-        self.results = model(image)
+        self.results = self.model(image)
         # mask true인덱스만 추출 -> 중첩 박스 제거
         mask = await self.process_predictions(self.results, threshold=0.8)
         if mask == None:
