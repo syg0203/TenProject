@@ -20,14 +20,14 @@ class faceage:
 
     def __init__(self):
         self.label_li = [
-            '0-6 years old',
-            '7-12 years old',
-            '13-19 years old',
-            '20-30 years old',
-            '31-45 years old',
-            '46-55 years old',
-            '56-66 years old',
-            '67-80 years old'
+            '당신의 얼굴 나이는 : 0세~6세',
+            '당신의 얼굴 나이는 : 7세~12세',
+            '당신의 얼굴 나이는 : 13세~19세',
+            '당신의 얼굴 나이는 : 20세~30세',
+            '당신의 얼굴 나이는 : 31세~45세',
+            '당신의 얼굴 나이는 : 46세~55세',
+            '당신의 얼굴 나이는 : 56세~66세',
+            '당신의 얼굴 나이는 : 67세~80세'
         ]
         self.model = load_model(
             "./asset/FaceClassification_CP128_2023-10-16.hdf5")
@@ -84,13 +84,9 @@ route = APIRouter()
 @route.post("/faceage")
 async def upload_photo(file: UploadFile):
     try:
-        # Doraemong 클래스의 인스턴스 생성
         faceagecls = faceage()
-
-        # 업로드된 파일의 내용 읽기
         content = await file.read()
 
-        # DoraemonG 모델을 사용하여 예측 수행
         json_string = await faceagecls.predict(content)
         return json_string
 
