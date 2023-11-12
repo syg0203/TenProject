@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <title> 누가 왕이될 상이가? </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="우리중 누가 왕이될 상일까?">
+    <meta name="keyword" content="10초,테스트,10sec,games,10초 게임,술자리,풍선주먹,아이돌포지션,MBTI,왕게임">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Idol_Position_Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class = 'BackGroundCol'>
+    <nav class="navbar navbar-expand-lg navbar-light nav-distance">
+        <a class="navbar-brand">아누가 왕이될 상인가?</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <section class="section">
+        <h1 class="title">누가 왕이될 상인가?</h1>
+        <h4 class="subtitle">우리중 왕이될 관상은?</h2>
+        <br>
+    </section>
+    <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <div class="container file-upload">
+        <div class="image-upload-wrap">
+            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+            <div class="drag-text">
+                <img src="STAMPS/upload.svg" class="mt-5 pt-5 upload">
+                <h3 class="mb-5 pb-5 pt-4  upload-text">얼굴 사진을 올려놓거나 눌러서 업로드하세요!</h3>
+            </div>
+        </div>
+        <div class="file-upload-content">
+            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
+            <div id="loading" class="animated bounce">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p class="text-center">AI가 여러분의 관상을 분석중입니다.</p>
+            </div>
+
+            <p class="result-message"></p>
+
+            <div class="image-title-wrap">
+                <button type="button" onclick="window.location.reload()" class="again">다른 사진으로 재시도</button>
+                <button type="button" onclick="window.location.href = '/';" class="again">다른 게임 하러가기</button>
+            </div>
+
+        </div>
+
+        <div class="sns_wrap" style="display: none; justify-content: center;">
+            <!-- <a target="blank" class="sns_instagram" href="http://twitter.com/share" title="인스타그램에 이 페이지 공유하기"><img src="img/icon-instagram.png"  alt="인스타그램" /></a> -->
+            <!-- <a target="blank" class="sns_twitter" href="http://twitter.com/share" title="카카오톡에 이 페이지 공유하기"><img src="img/icon-kakao.png"  alt="카카오톡" /></a> -->
+            <a href="#" class="btn_share_sns" title="링크복사" onclick="clip(); return false;"><img src="img/icon-share.png"
+                    alt="공유하기" /></a>
+            <a href="#" class="capture_screen" title="결과저장" onclick="captureAndSave(); return false;"><img
+                    src="img/icon-download.png" alt="캡처하기" /></a>
+        </div>
+        
+    </div>
+
+    <!-- Optional JavaScript -->
+    <script src="script.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.0/html2canvas.min.js"></script>
+
+</body>
+<!-- Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ -->
+
+</html>

@@ -3,11 +3,11 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 
-from api import doraemong, IdolPosition
+from api import doraemong, IdolPosition, whostheking
 
 app = FastAPI()
 
-routers = ["doraemong", "IdolPosition"]
+routers = ["doraemong", "IdolPosition", "whostheking"]
 
 
 @app.middleware("http")
