@@ -1,3 +1,4 @@
+# import psutil
 from fastapi import APIRouter, UploadFile
 import numpy as np
 import asyncio
@@ -9,8 +10,7 @@ from PIL import Image
 from torchvision.ops import box_iou
 import os
 import yolov5
-
-model = yolov5.load('./asset/epoch77-l.pt')
+import gc
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
@@ -18,7 +18,8 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 class doraemong:
     def __init__(self):
         self.label_li = np.array(['fat', 'thin'])
-        model.names[0] = '최고 도라에몽'
+        self.model = yolov5.load('./asset/epoch77-l.pt')
+        self.model.names[0] = '최고 도라에몽'
 
     async def remove_overlapping_boxes(self, boxes, scores, labels, threshold):
         num_boxes = len(boxes)
@@ -65,7 +66,7 @@ class doraemong:
 
     async def imagedown_async(self, img_path):
         image = Image.open(io.BytesIO(img_path))
-        self.results = model(image)
+        self.results = self.model(image)
         # mask true인덱스만 추출 -> 중첩 박스 제거
         mask = await self.process_predictions(self.results, threshold=0.8)
         if mask == None:
@@ -120,51 +121,70 @@ route = APIRouter()
 
 @route.post("/photo")
 async def upload_photo(file: UploadFile):
-    # Doraemong 클래스의 인스턴스 생성
-    doraecls = doraemong()
+    # ram_usage = psutil.virtual_memory()
+    # # RAM 사용량을 메가바이트(MB)로 변환
+    # ram_usage_mb = ram_usage.used / (1024 * 1024)
+    # # RAM 사용량 출력
+    # print(f"현재 RAM 사용량: {ram_usage_mb:.2f} MB")
+    try:
+        # Doraemong 클래스의 인스턴스 생성
+        doraecls = doraemong()
 
-    # 업로드된 파일의 내용 읽기
-    content = await file.read()
+        # 업로드된 파일의 내용 읽기
+        content = await file.read()
 
-    # DoraemonG 모델을 사용하여 예측 수행
-    json_string = await doraecls.predict(content)
+        # DoraemonG 모델을 사용하여 예측 수행
+        json_string = await doraecls.predict(content)
 
-    # 결과를 이미지 바이트로 변환
-    image_bytes = np.array(doraecls.results.render()[0])
-    # 이미지 바이트를 RGB 형식으로 변환
-    image_rgb = cv2.cvtColor(image_bytes, cv2.COLOR_BGR2RGB)
+        # 결과를 이미지 바이트로 변환
+        image_bytes = np.array(doraecls.results.render()[0])
+        # 이미지 바이트를 RGB 형식으로 변환
+        image_rgb = cv2.cvtColor(image_bytes, cv2.COLOR_BGR2RGB)
 
-    # RGB 이미지를 JPEG 형식으로 인코딩
-    _, encoded_image = cv2.imencode('.jpg', image_rgb)
+        # RGB 이미지를 JPEG 형식으로 인코딩
+        _, encoded_image = cv2.imencode('.jpg', image_rgb)
 
-    # JPEG 이미지를 base64 문자열로 인코딩
-    b64_string = base64.b64encode(encoded_image).decode('utf-8')
+        # JPEG 이미지를 base64 문자열로 인코딩
+        b64_string = base64.b64encode(encoded_image).decode('utf-8')
 
-    # 아싸이미지 base64 문자열로 인코딩
-    AssaImg = cv2.imread('./asset/assa.jpg', cv2.IMREAD_COLOR)
-    AssaImg = np.array(AssaImg)
-    _, AssaImg = cv2.imencode('.jpg', AssaImg)
-    AssaImg = base64.b64encode(AssaImg).decode('utf-8')
+        # 아싸이미지 base64 문자열로 인코딩
+        AssaImg = cv2.imread('./asset/assa.jpg', cv2.IMREAD_COLOR)
+        AssaImg = np.array(AssaImg)
+        _, AssaImg = cv2.imencode('.jpg', AssaImg)
+        AssaImg = base64.b64encode(AssaImg).decode('utf-8')
 
-    # 예측된 클래스에 따라 결과 딕셔너리 생성
-    if json_string[1] == 0:
-        result = {
-            "recommend": json_string[0],
-            'predict_arr': str(0),
-            'filename': b64_string
-        }
-    elif json_string[1] == -1:
-        result = {
-            "recommend": json_string[0],
-            'predict_arr': str(-1),
-            'filename': AssaImg
-        }
-    else:
-        result = {
-            "recommend": json_string[0],
-            'predict_arr': str(round((json_string[1] * 100), 1)),
-            'filename': b64_string
-        }
+        # 예측된 클래스에 따라 결과 딕셔너리 생성
+        if json_string[1] == 0:
+            result = {
+                "recommend": json_string[0],
+                'predict_arr': str(0),
+                'filename': b64_string
+            }
+        elif json_string[1] == -1:
+            result = {
+                "recommend": json_string[0],
+                'predict_arr': str(-1),
+                'filename': AssaImg
+            }
+        else:
+            result = {
+                "recommend": json_string[0],
+                'predict_arr': str(round((json_string[1] * 100), 1)),
+                'filename': b64_string
+            }
 
-    # 결과 딕셔너리 반환
-    return result
+        # 결과 딕셔너리 반환
+        return result
+
+    finally:
+        del doraecls
+        del content
+        del AssaImg
+        del json_string
+        del image_bytes
+        del image_rgb
+        del encoded_image
+        del b64_string
+        del _
+        del result
+        gc.collect()

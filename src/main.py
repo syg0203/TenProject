@@ -3,7 +3,8 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 
-from api import doraemong, IdolPosition, whostheking
+
+from api import doraemong, IdolPosition, faceage, whostheking
 
 app = FastAPI()
 
