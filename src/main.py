@@ -8,7 +8,7 @@ from api import doraemong, IdolPosition, faceage, whostheking
 
 app = FastAPI()
 
-routers = ["doraemong", "IdolPosition", "whostheking"]
+routers = ["doraemong", "IdolPosition","faceage", "whostheking"]
 
 
 @app.middleware("http")
