@@ -1,0 +1,10 @@
+*.png
+*.jpg
+.DS_Store
+*.pt
+*.pyc
+*.svg
+*.hdf5
+*.h5
+*checkpoint.ipynb
+*.jpeg
