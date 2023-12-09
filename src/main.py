@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+import os
 import uvicorn
 
 
@@ -25,4 +26,10 @@ for router in routers:
 app.mount("/", StaticFiles(directory="static", html=True), name="index")
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=2030)
+    print("os.name",os.name)
+    if os.name == 'posix':
+        print("os : ", os.name, "linux:gunicorn")
+        os.system(f"gunicorn -w {os.cpu_count()} -k uvicorn.workers.UvicornWorker main:app --host 0.0.0.0 --port 2030 --keep-alive 20 --max-requests 100")
+    elif os.name == 'nt':
+        print("os : ", os.name, "windows:uvicorn")
+        uvicorn.run(app, host="0.0.0.0", port=2030)
