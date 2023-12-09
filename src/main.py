@@ -2,8 +2,10 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 import os
-import uvicorn
+import sys
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(current_dir)
 
 from api import doraemong, IdolPosition, faceage, whostheking
 
@@ -29,7 +31,8 @@ if __name__ == "__main__":
     print("os.name",os.name)
     if os.name == 'posix':
         print("os : ", os.name, "linux:gunicorn")
-        os.system(f"gunicorn -w {os.cpu_count()} -k uvicorn.workers.UvicornWorker main:app --host 0.0.0.0 --port 2030 --keep-alive 20 --max-requests 100")
+        os.system("gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --host 0.0.0.0 --port 2030 --keep-alive 20 --max-requests 100")
     elif os.name == 'nt':
+        import uvicorn
         print("os : ", os.name, "windows:uvicorn")
         uvicorn.run(app, host="0.0.0.0", port=2030)

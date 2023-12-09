@@ -140,6 +140,15 @@ class response_generator:
             stamp = cv2.imread(self.imgmapper[rank_dict[person_idx]])
             middle_y, lx, rx, deg = psh
             target_length = rx - lx
+            rx_maximum=self.img.shape[1]
+
+            lx, rx = (lx-(rx-rx_maximum), rx_maximum) if rx > rx_maximum else (lx, rx) # 사람얼굴이 너무 오른쪽에 있을 경우 수정
+            lx, rx = (0, rx + abs(lx)) if lx < 0 else (lx, rx) # 사람얼굴이 너무 왼쪽에 있을 경우 수정
+            lx, rx = (0, rx_maximum) if lx < 0 | rx > rx_maximum else (lx, rx) # 조정을 해도 사람얼굴이 왼쪽 오른쪽 둘다 나올 경우 수정(독사진)
+
+            target_length_constant = target_length - (rx - lx) # 기존 target_length와 차이 변수 생성
+            target_length=target_length-target_length_constant # target_length 업데이트
+            middle_y=middle_y-target_length_constant # middle_y 업데이트
             ratio = target_length/stamp.shape[1]
             target_y = int(ratio*stamp.shape[0])
             if (middle_y - target_y) < 0:
@@ -156,6 +165,7 @@ class response_generator:
             roi = self.img[middle_y-stamp_y: middle_y, lx :rx]
             img2gray = cv2.cvtColor(stamp, cv2.COLOR_BGR2GRAY)
             _, mask = cv2.threshold(img2gray, 250, 255, cv2.THRESH_BINARY)
+            mask = cv2.resize(mask, (roi.shape[1], roi.shape[0])) # resize mask
             mask_inv = cv2.bitwise_not(mask)
             img_bg = cv2.bitwise_and(roi, roi, mask=mask)
             stamp_fg = cv2.bitwise_and(stamp, stamp, mask=mask_inv)
