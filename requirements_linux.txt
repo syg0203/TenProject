@@ -5,7 +5,6 @@ pandas==2.0.3
 Pillow==9.3.0
 tensorflow==2.13.1
 torch==2.0.1
-uvicorn==0.22.0
 yolov5==7.0.12
 albumentations==0.5.2
 ultralytics==8.0.124
