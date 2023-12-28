@@ -7,7 +7,7 @@ import sys
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
-from api import doraemong, IdolPosition, faceage, whostheking
+from api import * # doraemong, IdolPosition, faceage, whostheking
 
 app = FastAPI()
 
