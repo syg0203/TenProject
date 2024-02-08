@@ -31,7 +31,7 @@ if __name__ == "__main__":
     print("os.name :::::: ",os.name)
     if os.name == 'posix':
         print("os : ", os.name, "linux:gunicorn")
-        os.system("gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --host 0.0.0.0 --port 2030 --timeout 30 --keep-alive 30 --max-requests 200")
+        os.system("gunicorn -w 1 -k uvicorn.workers.UvicornWorker src.main:app -b 0.0.0.0:2030 --timeout 30 --keep-alive 30 --max-requests 200")
     elif os.name == 'nt':
         import uvicorn
         print("os.name :::::: ", os.name, "windows:uvicorn")
