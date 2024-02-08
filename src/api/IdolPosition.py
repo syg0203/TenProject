@@ -232,7 +232,7 @@ class response_generator:
 router = APIRouter()
 
 
-@router.post("/get_idol_position")
+@router.post("/idolposition_router")
 async def upload_result(file: UploadFile):
     get_position = idol_position()
     content = await file.read()
