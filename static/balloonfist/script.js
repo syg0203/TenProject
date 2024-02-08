@@ -98,7 +98,7 @@ async function readURL(input) {
                 formData.append('file', blob, 'image.jpg');
 
                 try {
-                    const response = await fetch('/photo', {
+                    const response = await fetch('/balloonfist_router', {
                         method: 'POST',
                         body: formData,
                     });
