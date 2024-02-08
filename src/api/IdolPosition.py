@@ -135,7 +135,7 @@ class idol_position:
 
         self.model = ResNet(repeats=[3, 4, 23, 3], num_classes=18)
         self.model.load_state_dict(torch.load(
-            './asset/model_weights(ResNet_IDOL)_three_cats.pt', map_location=torch.device('cpu')))
+            './asset/idolposition_model.pt', map_location=torch.device('cpu')))
         self.face_cascade = cv2.CascadeClassifier(
             cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
@@ -211,7 +211,7 @@ class response_generator:
 
     async def stamp_image(self, stamp, img, pos):
         pos_x, pos_y = pos
-        stamp = cv2.imread(f'./static/idolposition/STAMPS/{stamp}.jpg')
+        stamp = cv2.imread(f'./asset/stamps/idolposition/{stamp}.jpg')
         img_length, img_hight, _ = img.shape
         stamp_ratio = round(img_length/5)
         stamp = cv2.resize(stamp, dsize=[stamp_ratio, stamp_ratio])
