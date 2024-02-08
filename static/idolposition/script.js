@@ -99,7 +99,7 @@ function captureAndSave() {
                     formData.append('file', blob, 'image.jpg');
     
                     try {
-                        const response = await fetch('/get_idol_position', {
+                        const response = await fetch('/idolposition_router', {
                             method: 'POST',
                             body: formData,
                         });

@@ -99,7 +99,7 @@ function captureAndSave() {
                     formData.append('file', blob, 'image.jpg');
     
                     try {
-                        const response = await fetch('/whos_the_king', {
+                        const response = await fetch('/whostheking_router', {
                             method: 'POST',
                             body: formData,
                         });

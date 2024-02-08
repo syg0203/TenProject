@@ -10,15 +10,14 @@ from PIL import Image
 from torchvision.ops import box_iou
 import os
 import yolov5
-import gc
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 
-class doraemong:
+class balloonfist:
     def __init__(self):
         self.label_li = np.array(['fat', 'thin'])
-        self.model = yolov5.load('./asset/epoch77-l.pt')
+        self.model = yolov5.load('./asset/balloonfist_model.pt')
         self.model.names[0] = '최고 도라에몽'
 
     async def remove_overlapping_boxes(self, boxes, scores, labels, threshold):
@@ -119,25 +118,20 @@ class doraemong:
 route = APIRouter()
 
 
-@route.post("/photo")
+@route.post("/balloonfist_router")
 async def upload_photo(file: UploadFile):
-    # ram_usage = psutil.virtual_memory()
-    # # RAM 사용량을 메가바이트(MB)로 변환
-    # ram_usage_mb = ram_usage.used / (1024 * 1024)
-    # # RAM 사용량 출력
-    # print(f"현재 RAM 사용량: {ram_usage_mb:.2f} MB")
     try:
-        # Doraemong 클래스의 인스턴스 생성
-        doraecls = doraemong()
+        # 클래스 인스턴스 생성
+        balloonfist_cls = balloonfist()
 
         # 업로드된 파일의 내용 읽기
         content = await file.read()
 
-        # DoraemonG 모델을 사용하여 예측 수행
-        json_string = await doraecls.predict(content)
+        # 모델을 사용하여 예측 수행
+        json_string = await balloonfist_cls.predict(content)
 
         # 결과를 이미지 바이트로 변환
-        image_bytes = np.array(doraecls.results.render()[0])
+        image_bytes = np.array(balloonfist_cls.results.render()[0])
         # 이미지 바이트를 RGB 형식으로 변환
         image_rgb = cv2.cvtColor(image_bytes, cv2.COLOR_BGR2RGB)
 
@@ -177,7 +171,7 @@ async def upload_photo(file: UploadFile):
         return result
 
     finally:
-        del doraecls
+        del balloonfist_cls
         del content
         del AssaImg
         del json_string
@@ -187,4 +181,3 @@ async def upload_photo(file: UploadFile):
         del b64_string
         del _
         del result
-        gc.collect()

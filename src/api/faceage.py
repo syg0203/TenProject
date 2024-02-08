@@ -30,7 +30,7 @@ class faceage:
             '당신의 얼굴 나이는 : 67세~80세'
         ]
         self.model = load_model(
-            "./asset/FaceClassification_CP128_2023-10-16.hdf5")
+            "./asset/faceage_model.hdf5")
         self.face_cascade = cv2.CascadeClassifier(
             cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')  # 얼굴 검출기 모델
 
@@ -80,8 +80,7 @@ class faceage:
 
 route = APIRouter()
 
-
-@route.post("/faceage")
+@route.post("/faceage_router")
 async def upload_photo(file: UploadFile):
     try:
         faceagecls = faceage()

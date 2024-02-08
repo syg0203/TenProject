@@ -94,7 +94,7 @@ class data_parser :
 class proba_generator:
     def __init__(self):
         self.model = wtk_model()
-        self.model.load_state_dict(torch.load('./asset/wtk_model_weights.pt', map_location=torch.device('cpu')))
+        self.model.load_state_dict(torch.load('./asset/whostheking_model.pt', map_location=torch.device('cpu')))
 
     async def predict_all(self, whole_data):
         proba_holder = [await self.predict(single_data) for single_data in whole_data]
@@ -185,7 +185,7 @@ class response_generator:
 # API
 route = APIRouter()
 
-@route.post("/whos_the_king")
+@route.post("/whostheking_router")
 async def upload_result(file: UploadFile):
     content = await file.read()
     content_out = np.array(Image.open(BytesIO(content)))[:, :, ::-1]
