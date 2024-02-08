@@ -135,7 +135,7 @@ class idol_position:
 
         self.model = ResNet(repeats=[3, 4, 23, 3], num_classes=18)
         self.model.load_state_dict(torch.load(
-            './asset/idolposition_model.pt', map_location=torch.device('cpu')))
+            './asset/model_weights(ResNet_IDOL)_three_cats.pt', map_location=torch.device('cpu')))
         self.face_cascade = cv2.CascadeClassifier(
             cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
@@ -232,7 +232,7 @@ class response_generator:
 router = APIRouter()
 
 
-@router.post("/idolposition_router")
+@router.post("/get_idol_position")
 async def upload_result(file: UploadFile):
     get_position = idol_position()
     content = await file.read()
