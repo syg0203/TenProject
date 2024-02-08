@@ -7,11 +7,11 @@ import sys
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
-from api import * # doraemong, IdolPosition, faceage, whostheking
+from api import * # doraemong, idolposition, faceage, whostheking
 
 app = FastAPI()
 
-routers = ["doraemong", "IdolPosition","faceage", "whostheking"]
+routers = ["doraemong", "idolposition","faceage", "whostheking"]
 
 
 @app.middleware("http")

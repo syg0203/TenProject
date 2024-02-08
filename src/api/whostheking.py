@@ -113,10 +113,10 @@ class response_generator:
     def __init__(self, original_img):
         self.img = original_img
         self.imgmapper = { 
-            0:'./static/whostheking/STAMPS/king.jpeg',
-            1:'./static/whostheking/STAMPS/noble.jpeg',
-            2:'./static/whostheking/STAMPS/commoner.jpeg',
-            3:'./static/whostheking/STAMPS/slave.jpeg'
+            0:'./asset/stamps/whostheking/king.jpeg',
+            1:'./asset/stamps/whostheking/noble.jpeg',
+            2:'./asset/stamps/whostheking/commoner.jpeg',
+            3:'./asset/stamps/whostheking/slave.jpeg'
             }
 
     async def rank_sorter(self, proba_list):
