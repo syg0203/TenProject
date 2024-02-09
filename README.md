@@ -1,9 +1,55 @@
-### 텐프로젝트
- - 10개 이상의 머신러닝 프로젝트를 한 곳에 모아둔 프로젝트
- - Social Media에 컨텐츠소비용을 타겟으로한 프로젝트 제작
- - 머신러닝을 기반으로한 프로젝트 위주
+# 🎮 TensecGames README
 
-#### 주소 : https://tensecgames.com/
+![readme_mockup2](https://github.com/syg0203/TenProject/assets/79491796/63cefb2e-4442-4b95-8707-ea6956a7f4c3)
 
-#### ●index page
-![image](https://github.com/syg0203/TenProject/assets/79491796/ba0c18f1-03df-4c04-a936-4ae5640b25be)
+- URL : https://tensecgames.com<br>
+
+## TenProject
+ - Social Media에서 유행하는 인싸 테스트를 할 수 있습니다.
+ - 다양한 이미지 기반 테스트를 경험할 수 있습니다.
+ - 회원 가입 없이 사용할 수 있습니다.
+
+## 팀원 구성
+
+<div align="center">
+
+| **신영근** | **이현준** |
+| :------: |  :------: |
+| [<img src="https://avatars.githubusercontent.com/u/79491796?v=4" height=150 width=150> <br/> @syg0203](https://github.com/syg0203) | [<img src="https://avatars.githubusercontent.com/u/60064604?v=4" height=150 width=150> <br/> @Hyunjun-Bruce-Lee](https://github.com/Hyunjun-Bruce-Lee) |
+
+</div>
+
+<br>
+
+## 프로젝트 구조
+```
+📦TenProject
+ ┣ 📂asset
+ ┃ ┣ 📂stamps
+ ┃ ┃ ┣ 📂idolposition
+ ┃ ┃ ┗ 📂whostheking
+ ┃ ┣ 📜balloonfist_model.pt
+ ┃ ┣ 📜faceage_model.hdf5
+ ┃ ┣ 📜idolposition_model.pt
+ ┃ ┗ 📜whostheking_model.pt
+ ┣ 📂src
+ ┃ ┣ 📂api
+ ┃ ┃ ┣ 📜balloonfist_model.py
+ ┃ ┃ ┣ 📜faceage.py
+ ┃ ┃ ┣ 📜idolposition.py
+ ┃ ┃ ┣ 📜whostheking.py
+ ┃ ┃ ┗ 📜__init__.py
+ ┃ ┗ 📜main.py
+ ┗ 📂static
+   ┣ 📂asset
+   ┃ ┣ 📂banner
+   ┃ ┗ 📂icons
+   ┣ 📂balloonfist
+   ┣ 📂faceage
+   ┣ 📂idolposition
+   ┣ 📂whostheking
+   ┣ 📜favicon.ico
+   ┣ 📜index.html
+   ┣ 📜script.js
+   ┗ 📜style.css
+```
