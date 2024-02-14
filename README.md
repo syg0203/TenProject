@@ -32,24 +32,28 @@
  ┃ ┣ 📜faceage_model.hdf5
  ┃ ┣ 📜idolposition_model.pt
  ┃ ┗ 📜whostheking_model.pt
+ ┣ 📂logs
+ ┃ ┣ 📂access
+ ┃ ┗ 📂error
  ┣ 📂src
  ┃ ┣ 📂api
+ ┃ ┃ ┣ 📜__init__.py
  ┃ ┃ ┣ 📜balloonfist_model.py
  ┃ ┃ ┣ 📜faceage.py
  ┃ ┃ ┣ 📜idolposition.py
- ┃ ┃ ┣ 📜whostheking.py
- ┃ ┃ ┗ 📜__init__.py
+ ┃ ┃ ┗ 📜whostheking.py
  ┃ ┗ 📜main.py
- ┗ 📂static
-   ┣ 📂asset
-   ┃ ┣ 📂banner
-   ┃ ┗ 📂icons
-   ┣ 📂balloonfist
-   ┣ 📂faceage
-   ┣ 📂idolposition
-   ┣ 📂whostheking
-   ┣ 📜favicon.ico
-   ┣ 📜index.html
-   ┣ 📜script.js
-   ┗ 📜style.css
+ ┣ 📂static
+ ┃ ┣ 📂asset
+ ┃ ┃ ┣ 📂banner
+ ┃ ┃ ┗ 📂icons
+ ┃ ┣ 📂balloonfist
+ ┃ ┣ 📂faceage
+ ┃ ┣ 📂idolposition
+ ┃ ┣ 📂whostheking
+ ┃ ┣ 📜index.html
+ ┃ ┣ 📜script.js
+ ┃ ┗ 📜style.css
+ ┣ 📜gunicorn.config.py
+
 ```
