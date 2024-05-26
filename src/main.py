@@ -52,7 +52,7 @@ if __name__ == "__main__":
     print("os.name :::::: ",os.name)
     if os.name == 'posix':
         print("os : ", os.name, "linux:gunicorn")
-        os.system("gunicorn -c ./gunicorn.config.py")
+        os.system("gunicorn -c ./modules/core/gunicorn.config.py")
     elif os.name == 'nt':
         import uvicorn
         print("os.name :::::: ", os.name, "windows:uvicorn")
