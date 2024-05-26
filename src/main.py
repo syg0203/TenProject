@@ -19,7 +19,6 @@ allowed_origins = [
     "http://localhost:2030",
     "http://127.0.0.1:2030",
     "https://tensecgames.com",
-    "http://syg0203.iptime.org:2030",
 ]
 
 app.add_middleware(
@@ -43,10 +42,6 @@ async def access_control_middleware(request: Request, call_next):
         
     response = await call_next(request)
     return response
-
-# app.add_middleware(
-#     TrustedHostMiddleware, allowed_hosts=["tensecgames.com","*.tensecgames.com"] 
-# )
 
 for router in routers:
     exec(f"app.include_router({router})")
