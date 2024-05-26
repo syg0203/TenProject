@@ -19,6 +19,7 @@ allowed_origins = [
     "http://localhost:2030",
     "http://127.0.0.1:2030",
     "https://tensecgames.com",
+    "http://syg0203.iptime.org:2030",
 ]
 
 app.add_middleware(
