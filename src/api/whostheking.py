@@ -10,6 +10,13 @@ import torch.nn.functional as F
 import mediapipe as mp
 import math
 import asyncio
+import os
+import sys
+
+root_path = os.getcwd()
+sys.path.insert(1, root_path)
+
+from modules import common
 
 # whos the king model
 class wtk_model(nn.Module):
@@ -187,18 +194,21 @@ route = APIRouter()
 
 @route.post("/whostheking_router")
 async def upload_result(file: UploadFile):
-    content = await file.read()
-    content_out = np.array(Image.open(BytesIO(content)))[:, :, ::-1]
+    try:
+        content = await file.read()
+        content_out = np.array(Image.open(BytesIO(content)))[:, :, ::-1]
 
-    proba_gen, parser, response_gen = proba_generator(), data_parser(), response_generator(content_out)
+        proba_gen, parser, response_gen = proba_generator(), data_parser(), response_generator(content_out)
 
-    input_data, pos_holder = await parser(content_out)
-    if input_data == '-1':
-        content=base64.b64encode(content).decode('utf-8')
-        return {'message': '얼굴을 인식할수 없습니다 ㅜㅜ' ,'image':content}
+        input_data, pos_holder = await parser(content_out)
+        if input_data == '-1':
+            content=base64.b64encode(content).decode('utf-8')
+            return {'message': '얼굴을 인식할수 없습니다 ㅜㅜ' ,'image':content}
 
-    proba_list = await proba_gen.predict_all(input_data)
-    rank_dict = await response_gen.rank_sorter(proba_list)
-    out_img = await response_gen.stamp_img(rank_dict, pos_holder)
-    
-    return {'message': '' ,'image':out_img}
+        proba_list = await proba_gen.predict_all(input_data)
+        rank_dict = await response_gen.rank_sorter(proba_list)
+        out_img = await response_gen.stamp_img(rank_dict, pos_holder)
+        
+        return {'message': '' ,'image':out_img}
+    except Exception as e:
+        common.exception_func(e, yg=False)

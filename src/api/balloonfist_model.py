@@ -10,6 +10,12 @@ from PIL import Image
 from torchvision.ops import box_iou
 import os
 import yolov5
+import sys
+
+root_path = os.getcwd()
+sys.path.insert(1, root_path)
+
+from modules import common
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
@@ -169,6 +175,8 @@ async def upload_photo(file: UploadFile):
 
         # 결과 딕셔너리 반환
         return result
+    except Exception as e:
+        common.exception_func(e)
 
     finally:
         del balloonfist_cls

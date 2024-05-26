@@ -6,6 +6,12 @@ import numpy as np
 import os
 import base64
 from tensorflow.keras.models import load_model
+import sys
+
+root_path = os.getcwd()
+sys.path.insert(1, root_path)
+
+from modules import common
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
@@ -88,6 +94,14 @@ async def upload_photo(file: UploadFile):
 
         json_string = await faceagecls.predict(content)
         return json_string
+    
+    except Exception as e:
+        common.exception_func(e)
 
     finally:
         del faceagecls
+
+
+@route.get("/test")
+def temp():
+    return {'msg':"success"}

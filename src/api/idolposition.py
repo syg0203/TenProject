@@ -9,7 +9,13 @@ import torch  # ver 2.0.1+cu118
 import torch.nn as nn
 import cv2
 seed_num = 1004
+import os
+import sys
 
+root_path = os.getcwd()
+sys.path.insert(1, root_path)
+
+from modules import common
 # Resnet Model
 
 
@@ -234,12 +240,16 @@ router = APIRouter()
 
 @router.post("/idolposition_router")
 async def upload_result(file: UploadFile):
-    get_position = idol_position()
-    content = await file.read()
-    content = np.array(Image.open(BytesIO(content)))[:, :, ::-1]
-    la_1, la_2, la_3, label_num = await get_position.label_converter(content)
-    rg = response_generator()
-    result = await rg(la_1, la_2, la_3, label_num, content)
-    return result
+    try:
+        get_position = idol_position()
+        content = await file.read()
+        content = np.array(Image.open(BytesIO(content)))[:, :, ::-1]
+        la_1, la_2, la_3, label_num = await get_position.label_converter(content)
+        rg = response_generator()
+        result = await rg(la_1, la_2, la_3, label_num, content)
+        return result
+    
+    except Exception as e:
+        common.exception_func(e, yg=False)
 
 # http://127.0.0.1:8000/docs#/default
