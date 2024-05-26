@@ -100,8 +100,3 @@ async def upload_photo(file: UploadFile):
 
     finally:
         del faceagecls
-
-
-@route.get("/test")
-def temp():
-    return {'msg':"success"}

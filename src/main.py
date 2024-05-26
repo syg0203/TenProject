@@ -35,7 +35,7 @@ async def access_control_middleware(request: Request, call_next):
     if request.url.path in ['/redoc']:
         return JSONResponse(status_code=403, content={"detail": "Access denied"})
     
-    if any(request.url.path.startswith(f"/{router}") for router in routers+['test']):
+    if any(request.url.path.startswith(f"/{router}") for router in routers):
         referer = request.headers.get('referer')
         if not referer or not any(origin in referer for origin in allowed_origins):
             return JSONResponse(status_code=403, content={"detail": "Access denied"})
