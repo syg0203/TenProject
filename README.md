@@ -22,19 +22,22 @@
 <br>
 
 ## 프로젝트 구조
-```
-📦TenProject
+```📦TenProject
  ┣ 📂asset
  ┃ ┣ 📂stamps
- ┃ ┃ ┣ 📂idolposition
- ┃ ┃ ┗ 📂whostheking
+ ┃ ┃ ┗ 📂idolposition
+ ┃ ┣ 📂whostheking
+ ┃ ┣ 📜assa.jpg
  ┃ ┣ 📜balloonfist_model.pt
  ┃ ┣ 📜faceage_model.hdf5
  ┃ ┣ 📜idolposition_model.pt
  ┃ ┗ 📜whostheking_model.pt
- ┣ 📂logs
- ┃ ┣ 📂access
- ┃ ┗ 📂error
+ ┣ 📂modules
+ ┃ ┣ 📂core
+ ┃ ┃ ┣ 📜common.py
+ ┃ ┃ ┣ 📜configs.py
+ ┃ ┃ ┗ 📜gunicorn.config.py
+ ┃ ┗ 📜__init__.py
  ┣ 📂src
  ┃ ┣ 📂api
  ┃ ┃ ┣ 📜__init__.py
@@ -44,16 +47,16 @@
  ┃ ┃ ┗ 📜whostheking.py
  ┃ ┗ 📜main.py
  ┣ 📂static
- ┃ ┣ 📂asset
- ┃ ┃ ┣ 📂banner
- ┃ ┃ ┗ 📂icons
  ┃ ┣ 📂balloonfist
  ┃ ┣ 📂faceage
+ ┃ ┣ 📂icons
  ┃ ┣ 📂idolposition
+ ┃ ┣ 📂img
  ┃ ┣ 📂whostheking
  ┃ ┣ 📜index.html
  ┃ ┣ 📜script.js
  ┃ ┗ 📜style.css
- ┣ 📜gunicorn.config.py
-
+ ┣ 📜README.md
+ ┣ 📜requirements_linux.txt
+ ┗ 📜requirements_windows.txt
 ```
