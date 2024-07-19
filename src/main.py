@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
 
 import os
 import sys
@@ -15,30 +14,10 @@ app = FastAPI()
 
 routers = ["balloonfist_router", "idolposition_router","faceage_router", "whostheking_router"]
 
-allowed_origins = [
-    "http://localhost:2030",
-    "http://127.0.0.1:2030",
-    "https://tensecgames.com",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
 @app.middleware("http")
 async def access_control_middleware(request: Request, call_next):
-    if request.url.path in ['/redoc']:
+    if request.url.path in ['/redoc', '/docs']:
         return JSONResponse(status_code=403, content={"detail": "Access denied"})
-    
-    if any(request.url.path.startswith(f"/{router}") for router in routers):
-        referer = request.headers.get('referer')
-        if not referer or not any(origin in referer for origin in allowed_origins):
-            return JSONResponse(status_code=403, content={"detail": "Access denied"})
         
     response = await call_next(request)
     return response
