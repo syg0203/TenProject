@@ -241,7 +241,6 @@ router = APIRouter()
 @router.post("/idolposition_router")
 async def upload_result(file: UploadFile):
     try:
-        raise
         get_position = idol_position()
         content = await file.read()
         content = np.array(Image.open(BytesIO(content)))[:, :, ::-1]
@@ -251,6 +250,5 @@ async def upload_result(file: UploadFile):
         return result
     
     except Exception as e:
-        common.exception_func(e, yg=False)
-
+        common.exception_func(e, "idolposition", yg=False)
 # http://127.0.0.1:8000/docs#/default

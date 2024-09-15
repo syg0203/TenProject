@@ -96,7 +96,7 @@ async def upload_photo(file: UploadFile):
         return json_string
     
     except Exception as e:
-        common.exception_func(e)
+        common.exception_func(e, "faceage", yg=False)
 
     finally:
         del faceagecls

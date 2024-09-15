@@ -176,7 +176,7 @@ async def upload_photo(file: UploadFile):
         # 결과 딕셔너리 반환
         return result
     except Exception as e:
-        common.exception_func(e)
+        common.exception_func(e, "balloonfist", yg=False)
 
     finally:
         del balloonfist_cls

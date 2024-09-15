@@ -211,4 +211,4 @@ async def upload_result(file: UploadFile):
         
         return {'message': '' ,'image':out_img}
     except Exception as e:
-        common.exception_func(e, yg=False)
+        common.exception_func(e, "whostheking", yg=False)
