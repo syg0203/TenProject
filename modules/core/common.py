@@ -10,8 +10,11 @@ from modules.core.configs import Configs
 
 class common:
     def exception_func(e, yg=True,status_code=500):
-        detail = f"Error: {str(e)}\n{traceback.format_exc()}"
-        common.logging_alert(detail, yg=yg)
+        text = (
+            f"*Summary : * {str(e)}\n\n"
+            f"*Details*\n```{traceback.format_exc()}```"
+            )
+        common.logging_alert(text, yg=yg)
 
     def logging_alert(text,yg=True):
         url = Configs.SLACK_URL
@@ -21,7 +24,15 @@ class common:
         icon_emoji = f":{person}:"
         username = f"{person}_Alertmanager"
         header = {"Content-type":"application/json"}
-        attachments = [{"color":"#f54242", "text":text}]
+        attachments = [
+            {
+                "pretext":"*Error Alert*",
+                "title":f"Fix User : {person}",
+                "color":"#f54242",
+                "text":text,
+                "mrkdwn_in":["text","pretext"]
+                }
+            ]
 
         data = {
             "icon_emoji":icon_emoji,
