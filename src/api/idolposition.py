@@ -241,6 +241,7 @@ router = APIRouter()
 @router.post("/idolposition_router")
 async def upload_result(file: UploadFile):
     try:
+        raise
         get_position = idol_position()
         content = await file.read()
         content = np.array(Image.open(BytesIO(content)))[:, :, ::-1]
