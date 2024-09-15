@@ -9,14 +9,14 @@ import traceback
 from modules.core.configs import Configs
 
 class common:
-    def exception_func(e, yg=True,status_code=500):
+    def exception_func(e, target, yg=True,status_code=500):
         text = (
             f"*Summary : * {str(e)}\n\n"
             f"*Details*\n```{traceback.format_exc()}```"
             )
-        common.logging_alert(text, yg=yg)
+        common.logging_alert(text, target, yg=yg)
 
-    def logging_alert(text,yg=True):
+    def logging_alert(text, target, yg=True):
         url = Configs.SLACK_URL
         person = "bruce"
         if yg:
@@ -26,8 +26,8 @@ class common:
         header = {"Content-type":"application/json"}
         attachments = [
             {
-                "pretext":"*Error Alert*",
-                "title":f"Fix User : {person}",
+                "pretext":f"*Fix User : *{person}",
+                "title":f"Target : {target}",
                 "color":"#f54242",
                 "text":text,
                 "mrkdwn_in":["text","pretext"]
