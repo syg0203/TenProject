@@ -14,7 +14,7 @@ from api import *
 
 app = FastAPI()
 
-semaphore = asyncio.Semaphore(4)
+max_concurrent_requests=2
 
 class ConcurrencyMiddleware(BaseHTTPMiddleware):
     def __init__(self, app, max_concurrent_requests: int):
@@ -41,7 +41,7 @@ for router in routers:
 
 app.mount("/", StaticFiles(directory="static", html=True), name="index")
 
-app.add_middleware(ConcurrencyMiddleware, max_concurrent_requests=4)
+app.add_middleware(ConcurrencyMiddleware, max_concurrent_requests=max_concurrent_requests)
 
 if __name__ == "__main__":
     print("os.name :::::: ",os.name)
