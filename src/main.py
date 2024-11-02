@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.base import BaseHTTPMiddleware
+import asyncio
 
 import os
 import sys
@@ -11,6 +13,18 @@ sys.path.append(current_dir)
 from api import * 
 
 app = FastAPI()
+
+semaphore = asyncio.Semaphore(4)
+
+class ConcurrencyMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app, max_concurrent_requests: int):
+        super().__init__(app)
+        self.semaphore = asyncio.Semaphore(max_concurrent_requests)
+
+    async def dispatch(self, request: Request, call_next):
+        async with self.semaphore:
+            response = await call_next(request)
+        return response
 
 routers = ["balloonfist_router", "idolposition_router","faceage_router", "whostheking_router"]
 
@@ -26,6 +40,8 @@ for router in routers:
     exec(f"app.include_router({router})")
 
 app.mount("/", StaticFiles(directory="static", html=True), name="index")
+
+app.add_middleware(ConcurrencyMiddleware, max_concurrent_requests=4)
 
 if __name__ == "__main__":
     print("os.name :::::: ",os.name)
